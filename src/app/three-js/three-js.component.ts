@@ -1,5 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as THREE from 'three';
+import gsap from 'gsap';
 
 @Component({
   selector: 'app-three-js',
@@ -35,6 +36,25 @@ export class ThreeJsComponent implements AfterViewInit {
     });
     renderer.setSize(sizes.width, sizes.height);
 
-    renderer.render(scene, camera);
+    //Clock
+    const clock = new THREE.Clock();
+    gsap.to(mesh.position, { duration: 1, delay: 1, x: 2 });
+    gsap.to(mesh.position, { duration: 1, delay: 2, x: 0 });
+
+    //Animations
+    const tick = () => {
+      //Clock
+      const elapsedTime = clock.getElapsedTime();
+
+      //Update objects
+      // mesh.position.y = Math.sin(elapsedTime);
+      // mesh.position.x = Math.cos(elapsedTime);
+
+      //Renderer
+      renderer.render(scene, camera);
+      window.requestAnimationFrame(tick);
+    };
+
+    tick();
   }
 }
