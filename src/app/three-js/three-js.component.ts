@@ -1,6 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as THREE from 'three';
 import gsap from 'gsap';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 @Component({
   selector: 'app-three-js',
@@ -18,6 +19,16 @@ export class ThreeJsComponent implements AfterViewInit {
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
+    //Cursor
+    const cursor = {
+      x: 0,
+      y: 0,
+    };
+    window.addEventListener('mousemove', (e) => {
+      cursor.x = e.clientX / sizes.width - 0.5;
+      cursor.y = -(e.clientY / sizes.height - 0.5);
+    });
+
     //Sizes
     const sizes = {
       width: 800,
@@ -25,8 +36,14 @@ export class ThreeJsComponent implements AfterViewInit {
     };
 
     //Camera
-    const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
-    camera.position.z = 3;
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      sizes.width / sizes.height,
+      0.1,
+      100
+    );
+    camera.position.z = 2;
+    camera.lookAt(mesh.position);
     scene.add(camera);
 
     //Renderer
@@ -36,10 +53,12 @@ export class ThreeJsComponent implements AfterViewInit {
     });
     renderer.setSize(sizes.width, sizes.height);
 
+    //Controls
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+
     //Clock
     const clock = new THREE.Clock();
-    gsap.to(mesh.position, { duration: 1, delay: 1, x: 2 });
-    gsap.to(mesh.position, { duration: 1, delay: 2, x: 0 });
 
     //Animations
     const tick = () => {
@@ -47,8 +66,10 @@ export class ThreeJsComponent implements AfterViewInit {
       const elapsedTime = clock.getElapsedTime();
 
       //Update objects
-      // mesh.position.y = Math.sin(elapsedTime);
-      // mesh.position.x = Math.cos(elapsedTime);
+      // mesh.rotation.y = elapsedTime;
+
+      //Update controls
+      controls.update();
 
       //Renderer
       renderer.render(scene, camera);
