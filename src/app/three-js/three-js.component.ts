@@ -78,12 +78,6 @@ export class ThreeJsComponent implements AfterViewInit {
 
     //Animations
     const tick = () => {
-      //Clock
-      const elapsedTime = clock.getElapsedTime();
-
-      //Update objects
-      // mesh.rotation.y = elapsedTime;
-
       //Update controls
       controls.update();
 
