@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import * as dat from 'lil-gui';
 
 @Component({
   selector: 'app-three-js',
@@ -11,16 +12,18 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 export class ThreeJsComponent implements AfterViewInit {
   //Query selector
   @ViewChild('canv') canvas!: ElementRef<HTMLCanvasElement>;
+  private parameters = {
+    color: 0xff0000,
+  };
 
   ngAfterViewInit(): void {
-    console.log(this.canvas);
     //Scene
     const scene = new THREE.Scene();
 
     //Red cube
     const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
     const material = new THREE.MeshBasicMaterial({
-      color: 0xff0000,
+      color: this.parameters.color,
       wireframe: true,
     });
     const mesh = new THREE.Mesh(geometry, material);
@@ -90,5 +93,21 @@ export class ThreeJsComponent implements AfterViewInit {
     };
 
     tick();
+
+    //Debug
+    const gui = new dat.GUI();
+    gui.add(mesh.position, 'y');
+    gui.add(mesh, 'visible');
+    gui.add(material, 'wireframe');
+    gui.addColor(this.parameters, 'color').onChange(() => {
+      material.color.set(this.parameters.color);
+    });
+
+    const parameterSpin = {
+      spin: () => {
+        gsap.to(mesh.rotation, { duration: 1, y: mesh.rotation.y + 10 });
+      },
+    };
+    gui.add(parameterSpin, 'spin');
   }
 }
