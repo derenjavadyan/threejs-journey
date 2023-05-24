@@ -13,6 +13,7 @@ export class ThreeJsComponent implements AfterViewInit {
   @ViewChild('canv') canvas!: ElementRef<HTMLCanvasElement>;
 
   ngAfterViewInit(): void {
+    console.log(this.canvas);
     //Scene
     const scene = new THREE.Scene();
 
@@ -83,6 +84,8 @@ export class ThreeJsComponent implements AfterViewInit {
 
       //Renderer
       renderer.render(scene, camera);
+
+      //request animation
       window.requestAnimationFrame(tick);
     };
 
