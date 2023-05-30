@@ -104,10 +104,16 @@ export class ThreeJsComponent implements AfterViewInit {
     });
 
     const parameterSpin = {
-      spin: () => {
+      spinUp: () => {
         gsap.to(mesh.rotation, { duration: 1, y: mesh.rotation.y + 10 });
+        gsap.to(mesh.position, { duration: 0.5, y: mesh.position.y + 0.5 });
+      },
+      spinDown: () => {
+        gsap.to(mesh.rotation, { duration: 1, y: mesh.rotation.y - 10 });
+        gsap.to(mesh.position, { duration: 0.5, y: mesh.position.y - 0.5 });
       },
     };
-    gui.add(parameterSpin, 'spin');
+    gui.add(parameterSpin, 'spinUp');
+    gui.add(parameterSpin, 'spinDown');
   }
 }
