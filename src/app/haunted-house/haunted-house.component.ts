@@ -244,6 +244,18 @@ export class HauntedHouseComponent implements AfterViewInit {
     });
 
     /**
+     * Ghosts
+     */
+    const ghost1 = new THREE.PointLight('#ff00ff', 2, 3);
+    scene.add(ghost1);
+
+    const ghost2 = new THREE.PointLight('#00ffff', 2, 3);
+    scene.add(ghost2);
+
+    const ghost3 = new THREE.PointLight('#ffff00', 2, 3);
+    scene.add(ghost3);
+
+    /**
      * Camera
      */
     // Base camera
@@ -279,6 +291,26 @@ export class HauntedHouseComponent implements AfterViewInit {
 
     const tick = () => {
       const elapsedTime = clock.getElapsedTime();
+
+      //Update ghost
+      const ghost1Angle = elapsedTime * 0.5;
+      ghost1.position.x = Math.cos(ghost1Angle) * 4;
+      ghost1.position.z = Math.sin(ghost1Angle) * 4;
+      ghost1.position.y = Math.sin(elapsedTime * 3);
+
+      const ghost2Angle = -elapsedTime * 0.32;
+      ghost2.position.x = Math.cos(ghost2Angle) * 5;
+      ghost2.position.z = Math.sin(ghost2Angle) * 5;
+      ghost2.position.y =
+        Math.sin(elapsedTime * 3) + Math.sin(elapsedTime * 2.5);
+
+      const ghost3Angle = -elapsedTime * 0.18;
+      ghost3.position.x =
+        Math.cos(ghost3Angle) * (7 + Math.sin(elapsedTime + 0.32));
+      ghost3.position.z =
+        Math.sin(ghost3Angle) * (7 + Math.sin(elapsedTime + 0.5));
+      ghost3.position.y =
+        Math.sin(elapsedTime * 5) + Math.sin(elapsedTime + 2.5);
 
       // Update controls
       controls.update();
