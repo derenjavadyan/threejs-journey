@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+// import * as dat from 'lil-gui';
 import * as dat from 'lil-gui';
 
 @Component({
@@ -16,7 +17,7 @@ export class HauntedHouseComponent implements AfterViewInit {
   };
 
   ngAfterViewInit(): void {
-    console.log('hi')
+    console.log('hi');
     /**
      * Base
      */
