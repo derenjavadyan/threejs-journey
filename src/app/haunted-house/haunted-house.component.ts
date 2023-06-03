@@ -16,6 +16,7 @@ export class HauntedHouseComponent implements AfterViewInit {
   };
 
   ngAfterViewInit(): void {
+    console.log('hi')
     /**
      * Base
      */
