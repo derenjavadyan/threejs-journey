@@ -17,7 +17,7 @@ export class HauntedHouseComponent implements AfterViewInit {
   };
 
   ngAfterViewInit(): void {
-    console.log('windows notebook');
+    console.log('mac notebook');
     /**
      * Base
      */
