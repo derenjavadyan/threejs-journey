@@ -17,6 +17,7 @@ export class ThreeJsComponent implements AfterViewInit {
   };
 
   ngAfterViewInit(): void {
+    console.log('asd');
     //Scene
     const scene = new THREE.Scene();
 
