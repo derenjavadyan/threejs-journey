@@ -5,9 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ThreeJsComponent } from './three-js/three-js.component';
 import { HauntedHouseComponent } from './haunted-house/haunted-house.component';
+import { ParticlesComponent } from './particles/particles.component';
 
 @NgModule({
-  declarations: [AppComponent, ThreeJsComponent, HauntedHouseComponent],
+  declarations: [AppComponent, ThreeJsComponent, HauntedHouseComponent, ParticlesComponent],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],
