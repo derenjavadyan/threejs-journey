@@ -29,6 +29,9 @@ export class ParticlesComponent implements AfterViewInit {
      * Textures
      */
     const textureLoader = new THREE.TextureLoader();
+    const partcileTexture = textureLoader.load(
+      '../../assets/static/textures/particles/2.png'
+    );
 
     /**
      * Particles
@@ -48,9 +51,14 @@ export class ParticlesComponent implements AfterViewInit {
 
     //Material
     const particleMaterial = new THREE.PointsMaterial({
-      size: 0.02,
+      size: 0.2,
       sizeAttenuation: true,
+      color: '#ff88cc',
     });
+
+    particleMaterial.transparent = true;
+    particleMaterial.alphaMap = partcileTexture;
+    particleMaterial.depthWrite = false;
     //Points
     const particles = new THREE.Points(particleGeometry, particleMaterial);
 
