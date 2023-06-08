@@ -104,6 +104,7 @@ export class ParticlesComponent implements AfterViewInit {
     );
     camera.position.z = 3;
     scene.add(camera);
+    gui.add(camera.position, 'z').min(0).max(10).step(0.01);
 
     // Controls
     const controls = new OrbitControls(camera, this.canvas.nativeElement);
@@ -126,6 +127,14 @@ export class ParticlesComponent implements AfterViewInit {
     const tick = () => {
       const elapsedTime = clock.getElapsedTime();
 
+      //Update particles
+      // particles.rotation.y = elapsedTime * 0.2;
+
+      for (let i = 0; i < count; i++) {
+        const i3 = i * 3;
+        particleGeometry.attributes['position'].needsUpdate = true;
+      }
+
       // Update controls
       controls.update();
 
@@ -137,5 +146,7 @@ export class ParticlesComponent implements AfterViewInit {
     };
 
     tick();
+
+    console.log(particleGeometry.attributes['position']);
   }
 }
