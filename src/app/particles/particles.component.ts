@@ -41,24 +41,34 @@ export class ParticlesComponent implements AfterViewInit {
     const count = 5000;
 
     const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+
     for (let i = 0; i < count * 3; i++) {
       positions[i] = (Math.random() - 0.5) * 10;
+      colors[i] = Math.random();
     }
     particleGeometry.setAttribute(
       'position',
       new THREE.BufferAttribute(positions, 3)
+    );
+    particleGeometry.setAttribute(
+      'color',
+      new THREE.BufferAttribute(colors, 3)
     );
 
     //Material
     const particleMaterial = new THREE.PointsMaterial({
       size: 0.2,
       sizeAttenuation: true,
-      color: '#ff88cc',
+      // color: '#ff88cc',
     });
 
+    particleMaterial.vertexColors = true;
     particleMaterial.transparent = true;
     particleMaterial.alphaMap = partcileTexture;
     particleMaterial.depthWrite = false;
+    particleMaterial.blending = THREE.AdditiveBlending;
+
     //Points
     const particles = new THREE.Points(particleGeometry, particleMaterial);
 
