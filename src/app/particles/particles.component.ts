@@ -130,10 +130,19 @@ export class ParticlesComponent implements AfterViewInit {
       //Update particles
       // particles.rotation.y = elapsedTime * 0.2;
 
+      //For loop
+      const positionAttribute = particleGeometry.attributes[
+        'position'
+      ] as THREE.BufferAttribute;
+      const positionArray = new Float32Array(positionAttribute.array);
+
       for (let i = 0; i < count; i++) {
         const i3 = i * 3;
-        // particleGeometry.attributes['position'].array;
+        const x = positionArray[i3];
+        positionArray[i3 + 1] = Math.sin(elapsedTime + x);
       }
+      positionAttribute.array = positionArray;
+      particleGeometry.attributes['position'].needsUpdate = true;
 
       // Update controls
       controls.update();
