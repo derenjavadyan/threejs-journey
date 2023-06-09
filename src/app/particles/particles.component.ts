@@ -132,7 +132,7 @@ export class ParticlesComponent implements AfterViewInit {
 
       for (let i = 0; i < count; i++) {
         const i3 = i * 3;
-        particleGeometry.attributes['position'].needsUpdate = true;
+        // particleGeometry.attributes['position'].array;
       }
 
       // Update controls
@@ -146,7 +146,5 @@ export class ParticlesComponent implements AfterViewInit {
     };
 
     tick();
-
-    console.log(particleGeometry.attributes['position']);
   }
 }
