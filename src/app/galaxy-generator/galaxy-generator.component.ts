@@ -15,6 +15,10 @@ export class GalaxyGeneratorComponent implements AfterViewInit {
     height: window.innerHeight,
   };
 
+  private geometry!: THREE.BufferGeometry;
+  private material!: THREE.PointsMaterial;
+  private points!: THREE.Points;
+
   ngAfterViewInit(): void {
     /**
      * Base
@@ -30,24 +34,31 @@ export class GalaxyGeneratorComponent implements AfterViewInit {
      */
 
     const parameters = {
-      count: 1000,
-      size: 0.02,
+      count: 100000,
+      size: 0.01,
     };
 
     /**
      * Geometry
      */
 
-    const geometry = new THREE.BufferGeometry();
+    this.geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(parameters.count * 3);
+
     const generateGalaxy = () => {
+      // if (this.points !== null) {
+      //   this.geometry.dispose();
+      //   this.material.dispose();
+      //   scene.remove(this.points);
+      // }
+
       for (let i = 0; i < parameters.count; i++) {
         const i3 = i * 3;
         positions[i3] = (Math.random() - 0.5) * 3;
         positions[i3 + 1] = (Math.random() - 0.5) * 3;
         positions[i3 + 2] = (Math.random() - 0.5) * 3;
       }
-      geometry.setAttribute(
+      this.geometry.setAttribute(
         'position',
         new THREE.BufferAttribute(positions, 3)
       );
@@ -55,11 +66,24 @@ export class GalaxyGeneratorComponent implements AfterViewInit {
 
     generateGalaxy();
 
+    gui
+      .add(parameters, 'count')
+      .min(100)
+      .max(1000000)
+      .step(100)
+      .onFinishChange(generateGalaxy);
+    gui
+      .add(parameters, 'size')
+      .min(0.01)
+      .max(0.1)
+      .step(0.001)
+      .onFinishChange(generateGalaxy);
+
     /**
      * Material
      */
 
-    const material = new THREE.PointsMaterial({
+    this.material = new THREE.PointsMaterial({
       size: parameters.size,
       sizeAttenuation: true,
       depthWrite: false,
@@ -69,8 +93,8 @@ export class GalaxyGeneratorComponent implements AfterViewInit {
     /**
      * Points
      */
-    const points = new THREE.Points(geometry, material);
-    scene.add(points);
+    this.points = new THREE.Points(this.geometry, this.material);
+    scene.add(this.points);
 
     /**
      * Sizes
@@ -136,11 +160,4 @@ export class GalaxyGeneratorComponent implements AfterViewInit {
 
     tick();
   }
-}
-function galaxy() {
-  throw new Error('Function not implemented.');
-}
-
-function hello() {
-  throw new Error('Function not implemented.');
 }
