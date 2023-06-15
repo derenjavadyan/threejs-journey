@@ -36,6 +36,8 @@ export class GalaxyGeneratorComponent implements AfterViewInit {
     const parameters = {
       count: 100000,
       size: 0.01,
+      radius: 5,
+      brancges: 3,
     };
 
     /**
@@ -54,9 +56,12 @@ export class GalaxyGeneratorComponent implements AfterViewInit {
 
       for (let i = 0; i < parameters.count; i++) {
         const i3 = i * 3;
-        positions[i3] = (Math.random() - 0.5) * 3;
-        positions[i3 + 1] = (Math.random() - 0.5) * 3;
-        positions[i3 + 2] = (Math.random() - 0.5) * 3;
+        const radius = Math.random() * parameters.radius;
+        const branchAngle = i % parameters.brancges;
+
+        positions[i3] = radius;
+        positions[i3 + 1] = 0;
+        positions[i3 + 2] = 0;
       }
       this.geometry.setAttribute(
         'position',
