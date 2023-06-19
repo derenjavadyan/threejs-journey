@@ -38,6 +38,7 @@ export class GalaxyGeneratorComponent implements AfterViewInit {
       size: 0.01,
       radius: 5,
       branches: 3,
+      spin: 1,
     };
 
     /**
@@ -59,10 +60,11 @@ export class GalaxyGeneratorComponent implements AfterViewInit {
         const radius = Math.random() * parameters.radius;
         const branchAngle =
           ((i % parameters.branches) / parameters.branches) * Math.PI * 2;
+        const spinAngle = radius * parameters.spin;
 
-        positions[i3] = Math.cos(branchAngle) * radius;
+        positions[i3] = Math.cos(branchAngle + spinAngle) * radius;
         positions[i3 + 1] = 0;
-        positions[i3 + 2] = Math.sin(branchAngle) * radius;
+        positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius;
       }
       this.geometry.setAttribute(
         'position',
