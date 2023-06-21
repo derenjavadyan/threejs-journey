@@ -41,6 +41,8 @@ export class GalaxyGeneratorComponent implements AfterViewInit {
       spin: 1,
       randomness: 0.2,
       randomnessPower: 3,
+      insideCorlor: '#ff6030',
+      outsideCorlor: '#1b3984',
     };
 
     /**
@@ -48,7 +50,12 @@ export class GalaxyGeneratorComponent implements AfterViewInit {
      */
 
     this.geometry = new THREE.BufferGeometry();
+
     const positions = new Float32Array(parameters.count * 3);
+    const colors = new Float32Array(parameters.count * 3);
+
+    const colorInside = new THREE.Color(parameters.insideCorlor);
+    const colorOutsied = new THREE.Color(parameters.outsideCorlor);
 
     const generateGalaxy = () => {
       // if (this.points !== null) {
@@ -78,11 +85,22 @@ export class GalaxyGeneratorComponent implements AfterViewInit {
         positions[i3 + 1] = randomY;
         positions[i3 + 2] =
           Math.sin(branchAngle + spinAngle) * radius + randomZ;
+
+        const mixedColor = colorInside.clone();
+        mixedColor.lerp(colorOutsied, radius / parameters.radius);
+
+        //Colors
+        colors[i3] = mixedColor.r;
+        colors[i3 + 1] = mixedColor.g;
+        colors[i3 + 2] = mixedColor.b;
       }
+
       this.geometry.setAttribute(
         'position',
         new THREE.BufferAttribute(positions, 3)
       );
+
+      this.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     };
 
     generateGalaxy();
@@ -109,6 +127,7 @@ export class GalaxyGeneratorComponent implements AfterViewInit {
       sizeAttenuation: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
+      vertexColors: true,
     });
 
     /**
