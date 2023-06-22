@@ -7,9 +7,10 @@ import { ThreeJsComponent } from './three-js/three-js.component';
 import { HauntedHouseComponent } from './haunted-house/haunted-house.component';
 import { ParticlesComponent } from './particles/particles.component';
 import { GalaxyGeneratorComponent } from './galaxy-generator/galaxy-generator.component';
+import { ScrollComponent } from './scroll/scroll.component';
 
 @NgModule({
-  declarations: [AppComponent, ThreeJsComponent, HauntedHouseComponent, ParticlesComponent, GalaxyGeneratorComponent],
+  declarations: [AppComponent, ThreeJsComponent, HauntedHouseComponent, ParticlesComponent, GalaxyGeneratorComponent, ScrollComponent],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],
