@@ -32,12 +32,22 @@ export class ScrollComponent implements AfterViewInit {
     /**
      * Objects
      */
+
+    //Texture
+    const textureLoader = new THREE.TextureLoader();
+    const gradientTexture = textureLoader.load(
+      '../../assets/static/textures/scroll based textures/3.jpg'
+    );
+    gradientTexture.magFilter = THREE.NearestFilter;
+
     //Material
     const material = new THREE.MeshToonMaterial({
       color: parameters.materialColor,
+      gradientMap: gradientTexture,
     });
 
     //Meshes
+    const obejectsDistance = 4;
     const mesh1 = new THREE.Mesh(
       new THREE.TorusGeometry(1, 0.4, 16, 60),
       material
@@ -47,7 +57,14 @@ export class ScrollComponent implements AfterViewInit {
       new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16),
       material
     );
+
+    mesh1.position.y = -obejectsDistance * 0;
+    mesh2.position.y = -obejectsDistance * 1;
+    mesh3.position.y = -obejectsDistance * 2;
+
     scene.add(mesh1, mesh2, mesh3);
+
+    const sectionMeshes = [mesh1, mesh2, mesh3];
 
     /**
      * Lights
@@ -103,6 +120,12 @@ export class ScrollComponent implements AfterViewInit {
     const clock = new THREE.Clock();
     const tick = () => {
       const elapsedTime = clock.getElapsedTime();
+
+      //Animate meshes
+      for (const mesh of sectionMeshes) {
+        mesh.rotation.x = elapsedTime * 0.1;
+        mesh.rotation.y = elapsedTime * 0.2;
+      }
 
       // Render
       renderer.render(scene, camera);
