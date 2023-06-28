@@ -62,6 +62,10 @@ export class ScrollComponent implements AfterViewInit {
     mesh2.position.y = -obejectsDistance * 1;
     mesh3.position.y = -obejectsDistance * 2;
 
+    mesh1.position.x = 2;
+    mesh2.position.x = -2;
+    mesh3.position.x = 2;
+
     scene.add(mesh1, mesh2, mesh3);
 
     const sectionMeshes = [mesh1, mesh2, mesh3];
@@ -115,11 +119,34 @@ export class ScrollComponent implements AfterViewInit {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     /**
+     * Scroll
+     */
+    let scrollY = window.scrollY;
+    window.addEventListener('scroll', () => {
+      scrollY = window.scrollY;
+    });
+
+    /**
+     * Cursor
+     */
+    const cursor = {
+      x: 0,
+      y: 0,
+    };
+    window.addEventListener('mousemove', (event) => {
+      cursor.x = event.clientX / this.sizes.width;
+      cursor.y = event.clientY / this.sizes.height;
+    });
+
+    /**
      * Animate
      */
     const clock = new THREE.Clock();
     const tick = () => {
       const elapsedTime = clock.getElapsedTime();
+
+      //Animate camera
+      camera.position.y = (-scrollY / this.sizes.height) * obejectsDistance;
 
       //Animate meshes
       for (const mesh of sectionMeshes) {
