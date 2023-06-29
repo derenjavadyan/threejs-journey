@@ -98,6 +98,10 @@ export class ScrollComponent implements AfterViewInit {
     /**
      * Camera
      */
+    //Group
+    const cameraGroup = new THREE.Group();
+    scene.add(cameraGroup);
+
     // Base camera
     const camera = new THREE.PerspectiveCamera(
       35,
@@ -106,7 +110,7 @@ export class ScrollComponent implements AfterViewInit {
       100
     );
     camera.position.z = 6;
-    scene.add(camera);
+    cameraGroup.add(camera);
 
     /**
      * Renderer
@@ -134,8 +138,8 @@ export class ScrollComponent implements AfterViewInit {
       y: 0,
     };
     window.addEventListener('mousemove', (event) => {
-      cursor.x = event.clientX / this.sizes.width;
-      cursor.y = event.clientY / this.sizes.height;
+      cursor.x = event.clientX / this.sizes.width - 0.5;
+      cursor.y = event.clientY / this.sizes.height - 0.5;
     });
 
     /**
@@ -147,6 +151,11 @@ export class ScrollComponent implements AfterViewInit {
 
       //Animate camera
       camera.position.y = (-scrollY / this.sizes.height) * obejectsDistance;
+
+      const parallaxX = cursor.x;
+      const parallaxY = -cursor.y;
+      cameraGroup.position.x += (parallaxX - cameraGroup.position.x) * 0.1;
+      cameraGroup.position.y += (parallaxY - cameraGroup.position.y) * 0.1;
 
       //Animate meshes
       for (const mesh of sectionMeshes) {
