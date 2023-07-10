@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as dat from 'lil-gui';
+import CANNON from 'cannon';
 
 @Component({
   selector: 'app-physics',
@@ -35,12 +36,12 @@ export class PhysicsComponent implements AfterViewInit {
     const cubeTextureLoader = new THREE.CubeTextureLoader();
 
     const environmentMapTexture = cubeTextureLoader.load([
-      '/textures/environmentMaps/0/px.png',
-      '/textures/environmentMaps/0/nx.png',
-      '/textures/environmentMaps/0/py.png',
-      '/textures/environmentMaps/0/ny.png',
-      '/textures/environmentMaps/0/pz.png',
-      '/textures/environmentMaps/0/nz.png',
+      '../../assets/physics/0/px.png',
+      '../../assets/physics/0/nx.png',
+      '../../assets/physics/0/py.png',
+      '../../assets/physics/0/ny.png',
+      '../../assets/physics/0/pz.png',
+      '../../assets/physics/0/nz.png',
     ]);
 
     /**
