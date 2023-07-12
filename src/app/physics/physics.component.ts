@@ -45,7 +45,7 @@ export class PhysicsComponent implements AfterViewInit {
     ]);
 
     /**
-     * Pgysics
+     * Physics
      */
     //World
     const world = new CANNON.World();
@@ -59,6 +59,14 @@ export class PhysicsComponent implements AfterViewInit {
       shape: sphereShape,
     });
     world.addBody(sphereBody);
+
+    //Floor
+    const floorShape = new CANNON.Plane();
+    const floorBody = new CANNON.Body({
+      mass: 0,
+    });
+    floorBody.addShape(floorShape);
+    world.addBody(floorBody);
 
     /**
      * Test sphere
@@ -165,11 +173,23 @@ export class PhysicsComponent implements AfterViewInit {
      * Animate
      */
     const clock = new THREE.Clock();
+    let oldElapsedTime = 0;
 
     const tick = () => {
       const elapsedTime = clock.getElapsedTime();
+      const deltaTime = elapsedTime - oldElapsedTime;
+      oldElapsedTime = elapsedTime;
 
       //Update physics world
+      world.step(1 / 60, deltaTime, 3);
+
+      sphere.position.copy(
+        new THREE.Vector3(
+          sphereBody.position.x,
+          sphereBody.position.y,
+          sphereBody.position.z
+        )
+      );
 
       // Update controls
       controls.update();
