@@ -66,6 +66,10 @@ export class PhysicsComponent implements AfterViewInit {
       mass: 0,
     });
     floorBody.addShape(floorShape);
+    floorBody.quaternion.setFromAxisAngle(
+      new CANNON.Vec3(-1, 0, 1),
+      Math.PI * 0.5
+    );
     world.addBody(floorBody);
 
     /**
