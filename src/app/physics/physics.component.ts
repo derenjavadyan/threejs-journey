@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as dat from 'lil-gui';
-import CANNON, { Vec3 } from 'cannon';
+import CANNON from 'cannon';
 
 @Component({
   selector: 'app-physics',
@@ -21,6 +21,18 @@ export class PhysicsComponent implements AfterViewInit {
      * Debug
      */
     const gui = new dat.GUI();
+
+    const debugObject: any = {
+      createSphere: () => {
+        createSphere(Math.random() * 0.5, {
+          x: (Math.random() - 0.5) * 3,
+          y: 3,
+          z: (Math.random() - 0.5) * 3,
+        });
+      },
+    };
+
+    gui.add(debugObject, 'createSphere');
 
     /**
      * Base
@@ -164,6 +176,8 @@ export class PhysicsComponent implements AfterViewInit {
     /**
      * Utils
      */
+    const objectsToUpdate: any = [];
+
     const createSphere = (radius: number, position: any) => {
       //Three.js mesh
       const mesh = new THREE.Mesh(
@@ -189,9 +203,17 @@ export class PhysicsComponent implements AfterViewInit {
       });
       body.position.copy(position);
       world.addBody(body);
+
+      //Save in objects to update
+      objectsToUpdate.push({
+        mesh,
+        body,
+      });
     };
 
     createSphere(0.5, { x: 0, y: 3, z: 0 });
+
+    console.log(objectsToUpdate);
 
     /**
      * Animate
@@ -205,8 +227,11 @@ export class PhysicsComponent implements AfterViewInit {
       oldElapsedTime = elapsedTime;
 
       //Update physics world
-
       world.step(1 / 60, deltaTime, 3);
+
+      for (const object of objectsToUpdate) {
+        object.mesh.position.copy(object.body.position);
+      }
 
       // Update controls
       controls.update();
