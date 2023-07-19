@@ -178,16 +178,17 @@ export class PhysicsComponent implements AfterViewInit {
      */
     const objectsToUpdate: any = [];
 
+    const sphereGeoetry = new THREE.SphereGeometry(1, 20, 20);
+    const sphereMaterial = new THREE.MeshStandardMaterial({
+      metalness: 0.3,
+      roughness: 0.4,
+      envMap: environmentMapTexture,
+    });
+
     const createSphere = (radius: number, position: any) => {
       //Three.js mesh
-      const mesh = new THREE.Mesh(
-        new THREE.SphereGeometry(radius, 20, 20),
-        new THREE.MeshStandardMaterial({
-          metalness: 0.3,
-          roughness: 0.4,
-          envMap: environmentMapTexture,
-        })
-      );
+      const mesh = new THREE.Mesh(sphereGeoetry, sphereMaterial);
+      mesh.scale.set(radius, radius, radius);
       mesh.castShadow = true;
       mesh.position.copy(position);
       scene.add(mesh);
