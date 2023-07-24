@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as dat from 'lil-gui';
-import CANNON from 'cannon';
+import CANNON, { Vec3 } from 'cannon';
 
 @Component({
   selector: 'app-physics',
@@ -30,9 +30,18 @@ export class PhysicsComponent implements AfterViewInit {
           z: (Math.random() - 0.5) * 3,
         });
       },
+
+      createBox: () => {
+        createBox(Math.random(), Math.random(), Math.random(), {
+          x: (Math.random() - 0.5) * 3,
+          y: 3,
+          z: (Math.random() - 0.5) * 3,
+        });
+      },
     };
 
     gui.add(debugObject, 'createSphere');
+    gui.add(debugObject, 'createBox');
 
     /**
      * Base
@@ -187,15 +196,15 @@ export class PhysicsComponent implements AfterViewInit {
 
     const createSphere = (radius: number, position: any) => {
       //Three.js mesh
-      const mesh = new THREE.Mesh(sphereGeoetry, sphereMaterial);
+      let mesh = new THREE.Mesh(sphereGeoetry, sphereMaterial);
       mesh.scale.set(radius, radius, radius);
       mesh.castShadow = true;
       mesh.position.copy(position);
       scene.add(mesh);
 
       //Cannon.js body
-      const shape = new CANNON.Sphere(radius);
-      const body = new CANNON.Body({
+      let shape = new CANNON.Sphere(radius);
+      let body = new CANNON.Body({
         mass: 1,
         position: new CANNON.Vec3(0, 3, 0),
         //shape: shape is the same as just shape
@@ -212,9 +221,42 @@ export class PhysicsComponent implements AfterViewInit {
       });
     };
 
-    createSphere(0.5, { x: 0, y: 3, z: 0 });
+    const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+    const boxMaterial = new THREE.MeshStandardMaterial({
+      metalness: 0.5,
+      roughness: 0.8,
+      envMap: environmentMapTexture,
+    });
 
-    console.log(objectsToUpdate);
+    const createBox = (width: any, height: any, depth: any, position: any) => {
+      //Three.js mesh
+      let mesh = new THREE.Mesh(boxGeometry, boxMaterial);
+      mesh.scale.set(width, height, depth);
+      mesh.castShadow = true;
+      mesh.position.copy(position);
+      scene.add(mesh);
+
+      //Cannon js body
+      let box = new CANNON.Box(
+        new CANNON.Vec3(width * 0.5, height * 0.5, depth * 0.5)
+      );
+      let body = new CANNON.Body({
+        mass: 1,
+        position: new CANNON.Vec3(0, 3, 0),
+        shape: box,
+        material: defaultMaterial,
+      });
+      body.position.copy(position);
+      world.addBody(body);
+
+      //Save in objects to update
+      objectsToUpdate.push({
+        mesh,
+        body,
+      });
+    };
+
+    createSphere(0.5, { x: 0, y: 3, z: 0 });
 
     /**
      * Animate
@@ -232,6 +274,7 @@ export class PhysicsComponent implements AfterViewInit {
 
       for (const object of objectsToUpdate) {
         object.mesh.position.copy(object.body.position);
+        object.mesh.quaternion.copy(object.body.quaternion);
       }
 
       // Update controls
