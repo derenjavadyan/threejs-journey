@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as dat from 'lil-gui';
-import CANNON, { Vec3 } from 'cannon';
+import CANNON from 'cannon';
 
 @Component({
   selector: 'app-physics',
@@ -51,6 +51,20 @@ export class PhysicsComponent implements AfterViewInit {
     const scene = new THREE.Scene();
 
     /**
+     * Soudns
+     */
+    const hitSound = new Audio('../../assets/physics/sounds/hit.mp3');
+    const playHitSound = (collision: any) => {
+      const impactStrength = collision.contact.getImpactVelocityAlongNormal();
+
+      if (impactStrength > 1.5) {
+        hitSound.volume = Math.random();
+        hitSound.currentTime = 0;
+        hitSound.play();
+      }
+    };
+
+    /**
      * Textures
      */
     const textureLoader = new THREE.TextureLoader();
@@ -70,6 +84,8 @@ export class PhysicsComponent implements AfterViewInit {
      */
     //World
     const world = new CANNON.World();
+    world.broadphase = new CANNON.SAPBroadphase(world);
+    world.allowSleep = true;
     world.gravity.set(0, -9.82, 0);
 
     //Matrial
@@ -212,6 +228,7 @@ export class PhysicsComponent implements AfterViewInit {
         material: defaultMaterial,
       });
       body.position.copy(position);
+      body.addEventListener('collide', playHitSound);
       world.addBody(body);
 
       //Save in objects to update
@@ -247,6 +264,7 @@ export class PhysicsComponent implements AfterViewInit {
         material: defaultMaterial,
       });
       body.position.copy(position);
+      body.addEventListener('collide', playHitSound);
       world.addBody(body);
 
       //Save in objects to update
