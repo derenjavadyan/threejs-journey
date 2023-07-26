@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as dat from 'lil-gui';
-import CANNON from 'cannon';
+import * as CANNON from 'cannon-es';
 
 @Component({
   selector: 'app-physics',
@@ -38,10 +38,21 @@ export class PhysicsComponent implements AfterViewInit {
           z: (Math.random() - 0.5) * 3,
         });
       },
+
+      reset: () => {
+        for (const object of objectsToUpdate) {
+          object.body.removeEventListener('collide', playHitSound);
+
+          world.removeBody(object.body);
+          scene.remove(object.mesh);
+        }
+        objectsToUpdate.splice(0, objectsToUpdate.lenngth);
+      },
     };
 
     gui.add(debugObject, 'createSphere');
     gui.add(debugObject, 'createBox');
+    gui.add(debugObject, 'reset');
 
     /**
      * Base
