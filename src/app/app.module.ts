@@ -9,9 +9,10 @@ import { ParticlesComponent } from './particles/particles.component';
 import { GalaxyGeneratorComponent } from './galaxy-generator/galaxy-generator.component';
 import { ScrollComponent } from './scroll/scroll.component';
 import { PhysicsComponent } from './physics/physics.component';
+import { ImportedModelsComponent } from './imported-models/imported-models.component';
 
 @NgModule({
-  declarations: [AppComponent, ThreeJsComponent, HauntedHouseComponent, ParticlesComponent, GalaxyGeneratorComponent, ScrollComponent, PhysicsComponent],
+  declarations: [AppComponent, ThreeJsComponent, HauntedHouseComponent, ParticlesComponent, GalaxyGeneratorComponent, ScrollComponent, PhysicsComponent, ImportedModelsComponent],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],
