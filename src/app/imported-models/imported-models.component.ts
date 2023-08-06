@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as dat from 'lil-gui';
 
 @Component({
@@ -20,6 +21,15 @@ export class ImportedModelsComponent implements AfterViewInit {
 
     // Scene
     const scene = new THREE.Scene();
+
+    /**
+     * Models
+     */
+
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.load('../../assets/models/Duck/glTF/Duck.gltf', (gltf) => {
+      console.log(gltf);
+    });
 
     /**
      * Floor
