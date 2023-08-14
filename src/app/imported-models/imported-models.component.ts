@@ -27,9 +27,14 @@ export class ImportedModelsComponent implements AfterViewInit {
      */
 
     const gltfLoader = new GLTFLoader();
-    gltfLoader.load('../../assets/models/Duck/glTF/Duck.gltf', (gltf) => {
-      console.log(gltf);
-    });
+    gltfLoader.load(
+      '../../assets/models/FlightHelmet/glTF/FlightHelmet.gltf',
+      (gltf) => {
+        while (gltf.scene.children.length) {
+          scene.add(gltf.scene.children[0]);
+        }
+      }
+    );
 
     /**
      * Floor
