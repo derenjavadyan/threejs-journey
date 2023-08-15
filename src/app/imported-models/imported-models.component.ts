@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import * as dat from 'lil-gui';
 
 @Component({
@@ -25,16 +26,15 @@ export class ImportedModelsComponent implements AfterViewInit {
     /**
      * Models
      */
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('/draco/');
 
     const gltfLoader = new GLTFLoader();
-    gltfLoader.load(
-      '../../assets/models/FlightHelmet/glTF/FlightHelmet.gltf',
-      (gltf) => {
-        while (gltf.scene.children.length) {
-          scene.add(gltf.scene.children[0]);
-        }
-      }
-    );
+    gltfLoader.setDRACOLoader(dracoLoader);
+
+    gltfLoader.load('../../assets/models/Duck/glTF-Draco/Duck.gltf', (gltf) => {
+      scene.add(gltf.scene);
+    });
 
     /**
      * Floor
