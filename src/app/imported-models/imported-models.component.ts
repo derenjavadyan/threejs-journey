@@ -32,8 +32,16 @@ export class ImportedModelsComponent implements AfterViewInit {
     const gltfLoader = new GLTFLoader();
     gltfLoader.setDRACOLoader(dracoLoader);
 
-    gltfLoader.load('../../assets/models/Duck/glTF-Draco/Duck.gltf', (gltf) => {
+    let mixer: any = null;
+
+    gltfLoader.load('../../assets/models/Fox/glTF/Fox.gltf', (gltf) => {
+      mixer = new THREE.AnimationMixer(gltf.scene);
+      const action = mixer.clipAction(gltf.animations[2]);
+      action.play();
+
       scene.add(gltf.scene);
+
+      gltf.scene.scale.set(0.025, 0.025, 0.025);
     });
 
     /**
@@ -136,6 +144,12 @@ export class ImportedModelsComponent implements AfterViewInit {
       const elapsedTime = clock.getElapsedTime();
       const deltaTime = elapsedTime - previousTime;
       previousTime = elapsedTime;
+
+      //Update mixer
+
+      if (mixer !== null) {
+        mixer.update(deltaTime);
+      }
 
       // Update controls
       controls.update();
