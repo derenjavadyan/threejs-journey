@@ -10,9 +10,10 @@ import { GalaxyGeneratorComponent } from './galaxy-generator/galaxy-generator.co
 import { ScrollComponent } from './scroll/scroll.component';
 import { PhysicsComponent } from './physics/physics.component';
 import { ImportedModelsComponent } from './imported-models/imported-models.component';
+import { BlenderComponent } from './blender/blender.component';
 
 @NgModule({
-  declarations: [AppComponent, ThreeJsComponent, HauntedHouseComponent, ParticlesComponent, GalaxyGeneratorComponent, ScrollComponent, PhysicsComponent, ImportedModelsComponent],
+  declarations: [AppComponent, ThreeJsComponent, HauntedHouseComponent, ParticlesComponent, GalaxyGeneratorComponent, ScrollComponent, PhysicsComponent, ImportedModelsComponent, BlenderComponent],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],
