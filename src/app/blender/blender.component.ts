@@ -11,6 +11,10 @@ import * as dat from 'lil-gui';
 })
 export class BlenderComponent {
   @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
+  private sizes = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  };
 
   ngAfterViewInit(): void {
     /**
@@ -57,22 +61,18 @@ export class BlenderComponent {
     /**
      * Sizes
      */
-    const sizes = {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    };
 
     window.addEventListener('resize', () => {
       // Update sizes
-      sizes.width = window.innerWidth;
-      sizes.height = window.innerHeight;
+      this.sizes.width = window.innerWidth;
+      this.sizes.height = window.innerHeight;
 
       // Update camera
-      camera.aspect = sizes.width / sizes.height;
+      camera.aspect = this.sizes.width / this.sizes.height;
       camera.updateProjectionMatrix();
 
       // Update renderer
-      renderer.setSize(sizes.width, sizes.height);
+      renderer.setSize(this.sizes.width, this.sizes.height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     });
 
@@ -82,7 +82,7 @@ export class BlenderComponent {
     // Base camera
     const camera = new THREE.PerspectiveCamera(
       75,
-      sizes.width / sizes.height,
+      this.sizes.width / this.sizes.height,
       0.1,
       100
     );
@@ -109,7 +109,7 @@ export class BlenderComponent {
 
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.setSize(sizes.width, sizes.height);
+    renderer.setSize(this.sizes.width, this.sizes.height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     /**
