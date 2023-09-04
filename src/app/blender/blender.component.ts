@@ -27,6 +27,16 @@ export class BlenderComponent {
     const scene = new THREE.Scene();
 
     /**
+     * Model
+     */
+
+    const gltfLoader = new GLTFLoader();
+
+    gltfLoader.load('../../assets/models/Burger/hamburger.glb', (gltf) => {
+      scene.add(gltf.scene);
+    });
+
+    /**
      * Floor
      */
     const floor = new THREE.Mesh(
